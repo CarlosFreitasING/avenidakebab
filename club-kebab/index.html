@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="es" data-paleta="clasica">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Avenida Kebab</title>
+  <meta name="theme-color" content="#c94f2d">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/estilos.css?v=21">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="vendor/qrcode.min.js" defer></script>
+  <script src="vendor/jsQR.min.js" defer></script>
+  <script src="js/supabase-config.js" defer></script>
+  <script src="js/app.js?v=22" defer></script>
+</head>
+<body>
+  <main class="app">
+    <section id="vistaAcceso" class="acceso">
+      <div class="hero">
+        <div class="hero-contenido">
+          <div class="marca">
+            <div class="sello marca-logo"><img src="assets/logo1.jpeg" alt="Avenida Kebab"></div>
+            <div>
+              <h1>avenida Kebab</h1>
+              <p>Menú del restaurante y tarjeta digital: cada 10 menús que suman puntos, 1 menú gratis.</p>
+            </div>
+          </div>
+          <div class="chips">
+            <div class="chip-comida"><img src="assets/kebab.webp" alt=""><span>Kebab</span></div>
+            <div class="chip-comida"><img src="assets/parrilla.webp" alt=""><span>Parrilla</span></div>
+            <div class="chip-comida"><img src="assets/menu.webp" alt=""><span>Menú</span></div>
+          </div>
+        </div>
+        <div class="pincho" aria-hidden="true">
+          <div class="contadores-visuales">
+            <span>1</span><i></i><span>2</span><i></i><span>3</span><i></i><span>4</span><i></i><span>5</span><i></i><span>6</span><i></i><span>7</span><i></i><span>8</span><i></i><span>9</span><i></i><strong>10</strong>
+          </div>
+          <img class="banner-club" src="assets/banner.webp" alt="Banner decorativo">
+        </div>
+      </div>
+
+      <div class="panel rejilla acceso-panel">
+        <div>
+          <h2>Entra en tu cuenta</h2>
+          <p class="texto-suave">Usa tu correo y contraseña para acceder a tu tarjeta digital o al panel del restaurante.</p>
+        </div>
+        <div class="modo" aria-label="Acceso a la cuenta">
+          <button id="pestanaInicio" class="activo" type="button">Iniciar sesión</button>
+          <button id="pestanaRegistro" type="button">Crear cuenta</button>
+        </div>
+          <form id="formularioAcceso" class="formulario">
+            <label>Correo<input id="correo" type="email" autocomplete="email" inputmode="email" required placeholder="nombre@restaurante.com" aria-describedby="ayudaCorreo"><span id="ayudaCorreo" class="campo-ayuda">Usa un correo válido, por ejemplo nombre@dominio.com.</span></label>
+            <label>Contraseña<input id="contrasena" type="password" autocomplete="current-password" required minlength="6" placeholder="Mínimo 6 caracteres" aria-describedby="ayudaContrasena"><span id="ayudaContrasena" class="campo-ayuda"><span id="requisitoLongitud" class="requisito-contrasena">Mínimo 6 caracteres,</span> <span id="requisitoLetra" class="requisito-contrasena">al menos una letra</span><span id="conectorNumero" class="requisito-contrasena"> y </span><span id="requisitoNumero" class="requisito-contrasena">al menos un número</span><span id="puntoNumero" class="requisito-contrasena">.</span><span id="checkContrasena" class="requisito-check" aria-hidden="true"> ✓</span></span></label>
+            <div id="bloqueTerminos" class="terminos oculto">
+              <button id="verTerminos" class="secundario" type="button">Ver términos y condiciones</button>
+              <label class="check"><input id="aceptaTerminos" type="checkbox">Acepto los términos para crear una cuenta.</label>
+            </div>
+            <p id="estadoValidacion" class="estado-validacion" role="status" aria-live="polite"></p>
+            <button id="botonAcceso" type="submit">Iniciar sesión</button>
+            <button id="botonRecuperar" class="enlace-accion" type="button">¿Olvidaste tu contraseña?</button>
+          </form>
+      </div>
+    </section>
+
+    <section id="vistaApp" class="oculto">
+      <header class="cabecera-app">
+        <div class="barra-superior">
+          <div class="marca">
+            <div class="sello"><span id="selloRol">10</span></div>
+            <div>
+              <h2 id="tituloSesion">Avenida Kebab</h2>
+              <p id="subtituloSesion" class="texto-suave">Carta y tarjeta digital</p>
+            </div>
+          </div>
+          <button id="botonSalir" class="secundario" type="button">Salir</button>
+        </div>
+        <nav class="navegacion" aria-label="Secciones">
+          <button id="navMenu" class="activa" type="button">Menú</button>
+          <button id="navTarjeta" type="button">Tarjeta QR</button>
+        </nav>
+      </header>
+
+      <section id="seccionMenu" class="rejilla">
+        <div class="panel rejilla">
+          <div class="fila">
+            <div>
+              <h2>Menú</h2>
+              <p class="texto-suave">Carta informativa. No se realizan compras desde la app.</p>
+            </div>
+            <button id="nuevoArticulo" class="oculto" type="button">Añadir artículo</button>
+          </div>
+          <div class="filtros">
+            <label>Buscar<input id="buscarMenu" type="search" placeholder="Buscar kebab, durum, bebida..."></label>
+            <label>Categoría<select id="filtroCategoria"></select></label>
+            <label>Puntos<select id="filtroPuntos"><option value="todos">Todos</option><option value="si">Dan puntos</option><option value="no">No dan puntos</option></select></label>
+          </div>
+        </div>
+        <div class="dos-columnas">
+          <div id="listaMenu" class="lista-menu"></div>
+          <aside class="panel detalle">
+            <h2 id="detalleNombre">Selecciona un artículo</h2>
+            <p id="detalleDescripcion" class="texto-suave">Toca un producto para ver ingredientes, variantes y si suma para el menú gratis.</p>
+            <div class="detalle-linea"><strong>Precio</strong><p id="detallePrecio">-</p></div>
+            <div class="detalle-linea"><strong>Variantes</strong><p id="detalleVariantes">-</p></div>
+            <div class="detalle-linea"><strong>Guarniciones</strong><p id="detalleGuarniciones">-</p></div>
+            <div class="detalle-linea"><strong>Puntos</strong><p id="detallePuntos">-</p></div>
+            <div id="accionesArticulo" class="acciones oculto">
+              <button id="editarArticulo" type="button">Editar</button>
+              <button id="eliminarArticulo" class="peligro" type="button">Eliminar</button>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="seccionTarjeta" class="rejilla oculto">
+        <div id="tarjetaCliente" class="dos-columnas oculto">
+          <div class="panel rejilla">
+            <div class="fila">
+              <div><h3>Menús acumulados</h3><p class="texto-suave">Solo cuentan los artículos marcados como “dan puntos”.</p></div>
+              <div class="numero-grande" id="contadorCliente">0</div>
+            </div>
+            <div id="progresoCliente" class="progreso"></div>
+            <div id="premioCliente" class="premio oculto">Menú gratis disponible</div>
+          </div>
+          <div class="panel rejilla">
+            <h3>Tu código QR</h3>
+            <div class="qr-contenedor"><div id="codigoQr"></div><div id="textoCodigoCliente" class="codigo"></div></div>
+          </div>
+        </div>
+
+        <div id="tarjetaAdmin" class="dos-columnas oculto">
+          <div class="panel rejilla">
+            <h3>Escanear cliente</h3>
+            <div id="marcoCamara" class="marco-camara"><video id="camara" class="oculto" muted playsinline></video></div>
+            <canvas id="lienzoEscaner" class="oculto"></canvas>
+            <div class="acciones"><button id="abrirCamara" type="button">Abrir cámara</button><button id="cerrarCamara" class="secundario" type="button" disabled>Cerrar cámara</button></div>
+            <label>Código manual<input id="codigoManual" type="text" placeholder="Pega el código que aparece debajo del QR"></label>
+            <button id="buscarCliente" class="secundario" type="button">Buscar cliente</button>
+            <p id="ayudaEscaner" class="texto-suave">Si el lector QR no abre, usa el código manual del cliente.</p>
+          </div>
+          <div class="panel rejilla">
+            <h3>Cliente escaneado</h3>
+            <div id="adminVacio" class="texto-suave">Escanea un QR para ver la cuenta.</div>
+            <div id="adminCliente" class="cliente-admin oculto">
+              <div><h2 id="adminCorreoCliente"></h2><p class="texto-suave" id="adminIdCliente"></p></div>
+              <div class="fila"><div><p class="texto-suave">Menús actuales</p><div class="numero-grande" id="adminContadorCliente">0</div></div><div id="premioAdmin" class="premio oculto">Debe recibir 1 menú gratis</div></div>
+              <div id="progresoAdmin" class="progreso"></div>
+              <div class="acciones"><button id="sumarUno" type="button">Sumar 1 menú</button><button id="sumarVarios" class="secundario" type="button">Sumar varios</button><button id="canjear" class="peligro" type="button">Canjear y volver a 0</button><button id="quitarCliente" class="secundario" type="button">Quitar cliente</button></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div id="aviso" class="aviso" role="status" aria-live="polite"></div>
+  <div id="modalTerminos" class="modal oculto"><div class="panel rejilla"><h2>Términos y condiciones</h2><p class="texto-suave">Avenida Kebab es una tarjeta informativa de fidelidad. La app no procesa pagos ni pedidos.</p><p class="texto-suave">Solo los menús marcados como “dan puntos” suman para el premio. Al llegar a 10 puntos, el restaurante puede canjear un menú gratis y el contador vuelve a 0.</p><p class="texto-suave">La cuenta, el menú y los puntos se sincronizan mediante el servicio online del restaurante.</p><button id="cerrarTerminos" type="button">Entendido</button></div></div>
+  <div id="modalRecuperacion" class="modal oculto"><form id="formularioRecuperacion" class="panel rejilla"><h2>Cambia tu contraseña</h2><p class="texto-suave">Escribe una nueva contraseña para tu cuenta.</p><label>Nueva contraseña<input id="nuevaContrasena" type="password" minlength="6" required placeholder="Mínimo 6 caracteres" aria-describedby="ayudaNuevaContrasena"><span id="ayudaNuevaContrasena" class="campo-ayuda"><span id="nuevaLongitud" class="requisito-contrasena">Mínimo 6 caracteres,</span> <span id="nuevaLetra" class="requisito-contrasena">al menos una letra</span><span id="nuevoConectorNumero" class="requisito-contrasena"> y </span><span id="nuevoNumero" class="requisito-contrasena">al menos un número</span><span id="nuevoPuntoNumero" class="requisito-contrasena">.</span><span id="checkNuevaContrasena" class="requisito-check" aria-hidden="true"> ✓</span></span></label><label>Repite la contraseña<input id="confirmarContrasena" type="password" minlength="6" required placeholder="Repite la contraseña"></label><button type="submit">Guardar contraseña</button></form></div>
+  <div id="modalArticulo" class="modal oculto"><form id="formArticulo" class="panel rejilla"><h2 id="tituloArticulo">Artículo del menú</h2><input id="articuloId" type="hidden"><label>Nombre<input id="articuloNombre" required placeholder="Menú kebab en pan"></label><label>Categoría<input id="articuloCategoria" required placeholder="Menús con pan"></label><label>Precio (€)<input id="articuloPrecio" type="number" min="0" step="0.10" required></label><label>Descripción<textarea id="articuloDescripcion" required></textarea></label><label>Variantes<input id="articuloVariantes" placeholder="Pollo, ternera, mixto, cerdo"></label><label>Guarniciones<input id="articuloGuarniciones" placeholder="Patatas fritas, ensalada, salsa"></label><label class="check"><input id="articuloPuntos" type="checkbox">Este artículo suma puntos para el menú gratis</label><div class="acciones"><button type="submit">Guardar</button><button id="cancelarArticulo" class="secundario" type="button">Cancelar</button></div></form></div>
+</body>
+</html>

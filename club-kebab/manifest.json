@@ -1,0 +1,19 @@
+{
+  "name": "Avenida Kebab",
+  "short_name": "Avenida Kebab",
+  "description": "Menu y tarjeta digital de fidelidad de Avenida Kebab.",
+  "lang": "es",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fff8ef",
+  "theme_color": "#c94f2d",
+  "icons": [
+    {
+      "src": "./assets/logo1.jpeg",
+      "sizes": "1326x1326",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}
