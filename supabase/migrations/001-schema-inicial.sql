@@ -178,3 +178,16 @@
         awards_points = excluded.awards_points,
         active = excluded.active,
         updated_at = now();
+
+    update public.menu_items
+    set image_urls = array[
+        'https://ufekelbschopedbflabf.supabase.co/storage/v1/object/public/product-images/kebab-novilho.webp'
+    ],
+    variant_images = jsonb_build_object(
+        'Novilho', 'https://ufekelbschopedbflabf.supabase.co/storage/v1/object/public/product-images/kebab-novilho.webp',
+        'Porco', 'https://ufekelbschopedbflabf.supabase.co/storage/v1/object/public/product-images/kebab-porco.webp',
+        'Frango', 'https://ufekelbschopedbflabf.supabase.co/storage/v1/object/public/product-images/kebab-frango.webp',
+        'Peru', 'https://ufekelbschopedbflabf.supabase.co/storage/v1/object/public/product-images/kebab-peru.webp'
+    ),
+    updated_at = now()
+    where lower(name) = lower('Kebab');
