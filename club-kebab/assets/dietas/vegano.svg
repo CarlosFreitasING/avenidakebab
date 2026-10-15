@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="Vegano">
+  <circle cx="48" cy="48" r="44" fill="#2f7d5a"/>
+  <path d="M67 24C48 26 31 37 29 53c-1 10 5 17 14 19 12 2 24-7 27-21 2-9 0-18-3-27Z" fill="#fff7df"/>
+  <path d="M29 72c8-17 20-28 36-37" fill="none" stroke="#2f7d5a" stroke-width="5" stroke-linecap="round"/>
+  <path d="M54 31c4 5 6 10 6 16" fill="none" stroke="#2f7d5a" stroke-width="3" stroke-linecap="round"/>
+</svg>

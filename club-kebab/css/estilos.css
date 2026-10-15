@@ -179,6 +179,7 @@ h3 { font-size: 17px; line-height: 1.2; letter-spacing: 0; font-weight: 880; }
 .texto-suave { color: var(--suave); }
 .rejilla { display: grid; gap: 14px; }
 .dos-columnas { display: grid; grid-template-columns: 1fr; gap: 14px; }
+.menu-contenido { grid-template-columns: 1fr; }
 
 .panel {
   border: 1px solid rgba(234, 216, 195, .95);
@@ -253,12 +254,15 @@ input.campo-invalido { border-color: var(--picante); background: #fff7f4; }
 .cabecera-app { display: grid; gap: 14px; padding: 8px 0 16px; }
 .barra-superior { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .navegacion { padding: 5px; border: 1px solid var(--linea); border-radius: 8px; background: var(--crema); }
-.filtros { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.filtros { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .lista-menu { display: grid; grid-template-columns: 1fr; gap: 12px; }
 
 .articulo-enlace { display: block; color: inherit; text-decoration: none; }
 .articulo { display: grid; gap: 10px; border: 1px solid var(--linea); border-radius: 8px; padding: 14px; background: #fff; cursor: pointer; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
 .articulo-enlace:hover .articulo, .articulo-enlace:focus-visible .articulo { border-color: var(--azafran); box-shadow: 0 10px 24px rgba(53, 28, 17, .12); transform: translateY(-2px); }
+.articulo-imagen { display: grid; place-items: center; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 6px; background: linear-gradient(135deg, var(--fondo-puntos), var(--superficie-suave)); color: var(--suave); font-size: 13px; font-weight: 800; }
+.articulo-imagen img { width: 100%; height: 100%; object-fit: cover; }
+.articulo-editar { min-height: 38px; padding: 0 12px; color: var(--menta); background: var(--boton-secundario); box-shadow: none; font-size: 13px; }
 .articulo:hover { border-color: #d99b28; }
 .articulo-cabecera { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
 .precio { font-size: 22px; font-weight: 950; color: var(--picante); white-space: nowrap; }
@@ -270,15 +274,47 @@ input.campo-invalido { border-color: var(--picante); background: #fff7f4; }
 .detalle-linea strong { font-size: 13px; color: var(--suave); }
 .producto-pagina { display: grid; gap: 18px; align-content: center; min-height: calc(100vh - 32px); }
 .producto-cabecera { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
-.producto-volver { color: var(--menta); font-weight: 850; text-decoration: none; }
-.producto-volver:hover, .producto-volver:focus-visible { text-decoration: underline; }
+.producto-volver { display: inline-flex; align-items: center; gap: 10px; min-height: 50px; padding: 0 18px 0 10px; border: 0; border-radius: 999px; color: #fff; background: linear-gradient(135deg, var(--menta), var(--punto-activo-2)); font-size: 14px; font-weight: 900; text-decoration: none; box-shadow: 0 10px 20px rgba(23, 112, 93, .22); transition: transform .18s ease, box-shadow .18s ease, filter .18s ease; }
+.producto-volver span { display: grid; place-items: center; width: 32px; height: 32px; padding-bottom: 2px; border-radius: 50%; background: rgba(255, 255, 255, .2); font-family: "Segoe UI Symbol", Arial, sans-serif; font-size: 26px; font-weight: 900; line-height: 1; -webkit-text-stroke: 1px #fff; }
+.producto-volver span::before { display: none; }
+.producto-volver span::after { display: none; }
+.producto-volver:hover, .producto-volver:focus-visible { filter: saturate(1.15); transform: translateY(-2px); box-shadow: 0 14px 24px rgba(23, 112, 93, .3); }
 .producto-hero { display: grid; gap: 20px; padding: 26px; border-radius: 8px; color: #fff; background: linear-gradient(135deg, var(--hero-inicio), var(--granada) 58%, var(--hero-final)); box-shadow: var(--sombra); }
+.producto-galeria { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.producto-imagen { display: grid; place-items: center; aspect-ratio: 4 / 3; overflow: hidden; border: 1px solid rgba(255, 232, 199, .35); border-radius: 6px; background: rgba(37, 25, 20, .26); color: var(--texto-hero); font-size: 13px; font-weight: 800; text-align: center; }
+.producto-imagen img { width: 100%; height: 100%; object-fit: cover; }
+.producto-imagen-principal { grid-column: 1 / -1; min-height: 220px; }
+.producto-seccion { display: grid; gap: 9px; padding-top: 4px; }
+.producto-seccion h3 { margin: 0; font-size: 17px; line-height: 1.2; font-weight: 880; }
+.producto-seccion h4 { margin: 0 0 9px; font-size: 17px; line-height: 1.2; font-weight: 880; }
+.bloque-dietas { padding-top: 10px; }
+.producto-ayuda { color: var(--texto-hero); font-size: 13px; }
+.producto-etiquetas { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.producto-variante, .producto-guarniciones span { min-height: 42px; padding: 0 16px; border: 2px solid transparent; border-radius: 999px; color: var(--tinta); background: var(--superficie-suave); font-size: 15px; font-weight: 850; line-height: 1.1; }
+.producto-variante { cursor: pointer; box-shadow: none; }
+.producto-variante:hover, .producto-variante:focus-visible, .producto-variante.activa { border-color: var(--azafran); background: var(--azafran); color: #3d2206; box-shadow: 0 4px 12px rgba(245, 179, 51, .24); }
+.producto-guarniciones span { display: inline-flex; align-items: center; gap: 7px; min-height: 40px; padding: 0 13px; border-color: rgba(255, 232, 199, .35); background: rgba(255, 255, 255, .16); color: var(--texto-hero); font-size: 13px; }
+.producto-guarniciones b { font-size: 18px; line-height: 1; }
 .producto-hero .texto-suave { color: var(--texto-hero); }
 .producto-precio { font-size: clamp(36px, 8vw, 58px); line-height: 1; font-weight: 950; color: var(--premio-acento-1); }
 .producto-info { display: grid; gap: 14px; }
 .producto-lista { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
 .producto-lista li { padding: 9px 12px; border-radius: 999px; background: var(--superficie-suave); color: var(--tinta); font-size: 14px; font-weight: 750; }
-.producto-puntos { padding: 14px; border-left: 4px solid var(--menta); border-radius: 6px; background: var(--fondo-puntos); color: var(--tinta); font-weight: 800; }
+.alergenos-destacados { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 3px; }
+.alergeno-icono { display: grid; place-items: center; gap: 3px; min-height: 78px; padding: 7px 2px; border: 0; border-radius: 0; background: transparent; color: var(--texto-hero); text-align: center; }
+.alergeno-icono img { width: 48px; height: 48px; object-fit: contain; filter: grayscale(1) brightness(1.15); opacity: .72; }
+.alergeno-icono small { font-size: 11px; font-weight: 850; line-height: 1.05; }
+.alergeno-icono.presente { border: 0; background: transparent; color: #fff3d2; }
+.alergeno-icono.presente img { filter: none; opacity: 1; }
+.dietas-destacadas { display: flex; flex-wrap: wrap; gap: 10px; }
+.dieta-icono { display: grid; place-items: center; gap: 3px; min-width: 74px; text-align: center; }
+.dieta-icono img, .dieta-icono-generico { width: 48px; height: 48px; }
+.dieta-icono img { width: 68px; height: 68px; margin: -10px; object-fit: contain; }
+.dieta-icono-generico { display: grid; place-items: center; border-radius: 50%; background: #4b9b5b; color: #fff7df; font-size: 28px; line-height: 1; }
+.dieta-icono small { font-size: 11px; font-weight: 850; line-height: 1.05; }
+.producto-puntos { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; margin-top: 18px; padding: 18px 16px 12px; border-left: 5px solid var(--menta); border-radius: 8px; background: linear-gradient(135deg, #fff4d6, #ffe1a0); color: var(--tinta); box-shadow: 0 5px 14px rgba(61, 34, 6, .12); font-weight: 800; }
+.producto-puntos strong { display: inline-flex; align-items: center; min-height: 34px; padding: 0 12px; border-radius: 999px; background: var(--azafran); color: #3d2206; font-size: 21px; line-height: 1; white-space: nowrap; }
+.producto-puntos span { line-height: 1.3; }
 .producto-error { text-align: center; }
 .progreso { display: grid; grid-template-columns: repeat(10, 1fr); gap: 7px; }
 .marca-punto { aspect-ratio: 1; border-radius: 8px; border: 1px solid var(--borde-puntos); background: linear-gradient(180deg, var(--fondo-puntos), var(--linea)); position: relative; overflow: hidden; }
@@ -313,9 +349,10 @@ video { width: 100%; max-height: 360px; border-radius: 8px; background: var(--ca
 @media (min-width: 1200px) {
   .app { padding: 26px; }
   .dos-columnas { grid-template-columns: 1.05fr .95fr; align-items: start; }
+  .menu-contenido { grid-template-columns: 1fr; }
   .acciones { grid-template-columns: 1fr 1fr; }
   .hero { grid-template-columns: 1.1fr .9fr; align-items: center; }
-  .filtros { grid-template-columns: 1.2fr .8fr .8fr; }
+  .filtros { grid-template-columns: 1fr 1fr; }
   .lista-menu { grid-template-columns: repeat(2, 1fr); }
   .cabecera-app { grid-template-columns: 1fr auto; align-items: center; }
   .navegacion { width: 360px; }
@@ -326,4 +363,5 @@ video { width: 100%; max-height: 360px; border-radius: 8px; background: var(--ca
 
 @media (max-width: 560px) {
   .sello.marca-logo { width: 72px; height: 72px; }
+  .alergenos-destacados { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }

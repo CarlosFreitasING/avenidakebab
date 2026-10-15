@@ -10,7 +10,7 @@
   "theme_color": "#c94f2d",
   "icons": [
     {
-      "src": "./assets/logo1.jpeg",
+      "src": "./assets/brand/logo1.jpeg",
       "sizes": "1326x1326",
       "type": "image/jpeg",
       "purpose": "any maskable"

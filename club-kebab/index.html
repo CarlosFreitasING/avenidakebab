@@ -6,36 +6,36 @@
   <title>Avenida Kebab</title>
   <meta name="theme-color" content="#c94f2d">
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="css/estilos.css?v=21">
+  <link rel="stylesheet" href="css/estilos.css?v=23">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="vendor/qrcode.min.js" defer></script>
   <script src="vendor/jsQR.min.js" defer></script>
   <script src="js/supabase-config.js" defer></script>
-  <script src="js/app.js?v=22" defer></script>
+  <script src="js/app.js?v=30" defer></script>
 </head>
 <body>
   <main class="app">
-    <section id="vistaAcceso" class="acceso">
+    <section id="vistaAcceso" class="acceso oculto">
       <div class="hero">
         <div class="hero-contenido">
           <div class="marca">
-            <div class="sello marca-logo"><img src="assets/logo1.jpeg" alt="Avenida Kebab"></div>
+            <div class="sello marca-logo"><img src="assets/brand/logo1.jpeg" alt="Avenida Kebab"></div>
             <div>
               <h1>avenida Kebab</h1>
               <p>Menú del restaurante y tarjeta digital: cada 10 menús que suman puntos, 1 menú gratis.</p>
             </div>
           </div>
           <div class="chips">
-            <div class="chip-comida"><img src="assets/kebab.webp" alt=""><span>Kebab</span></div>
-            <div class="chip-comida"><img src="assets/parrilla.webp" alt=""><span>Parrilla</span></div>
-            <div class="chip-comida"><img src="assets/menu.webp" alt=""><span>Menú</span></div>
+            <div class="chip-comida"><img src="assets/menu/kebab.webp" alt=""><span>Kebab</span></div>
+            <div class="chip-comida"><img src="assets/menu/parrilla.webp" alt=""><span>Parrilla</span></div>
+            <div class="chip-comida"><img src="assets/menu/menu.webp" alt=""><span>Menú</span></div>
           </div>
         </div>
         <div class="pincho" aria-hidden="true">
           <div class="contadores-visuales">
             <span>1</span><i></i><span>2</span><i></i><span>3</span><i></i><span>4</span><i></i><span>5</span><i></i><span>6</span><i></i><span>7</span><i></i><span>8</span><i></i><span>9</span><i></i><strong>10</strong>
           </div>
-          <img class="banner-club" src="assets/banner.webp" alt="Banner decorativo">
+          <img class="banner-club" src="assets/brand/banner.webp" alt="Banner decorativo">
         </div>
       </div>
 
@@ -90,25 +90,12 @@
             <button id="nuevoArticulo" class="oculto" type="button">Añadir artículo</button>
           </div>
           <div class="filtros">
-            <label>Buscar<input id="buscarMenu" type="search" placeholder="Buscar kebab, durum, bebida..."></label>
             <label>Categoría<select id="filtroCategoria"></select></label>
             <label>Puntos<select id="filtroPuntos"><option value="todos">Todos</option><option value="si">Dan puntos</option><option value="no">No dan puntos</option></select></label>
           </div>
         </div>
-        <div class="dos-columnas">
+        <div class="dos-columnas menu-contenido">
           <div id="listaMenu" class="lista-menu"></div>
-          <aside class="panel detalle">
-            <h2 id="detalleNombre">Selecciona un artículo</h2>
-            <p id="detalleDescripcion" class="texto-suave">Toca un producto para ver ingredientes, variantes y si suma para el menú gratis.</p>
-            <div class="detalle-linea"><strong>Precio</strong><p id="detallePrecio">-</p></div>
-            <div class="detalle-linea"><strong>Variantes</strong><p id="detalleVariantes">-</p></div>
-            <div class="detalle-linea"><strong>Guarniciones</strong><p id="detalleGuarniciones">-</p></div>
-            <div class="detalle-linea"><strong>Puntos</strong><p id="detallePuntos">-</p></div>
-            <div id="accionesArticulo" class="acciones oculto">
-              <button id="editarArticulo" type="button">Editar</button>
-              <button id="eliminarArticulo" class="peligro" type="button">Eliminar</button>
-            </div>
-          </aside>
         </div>
       </section>
 
@@ -156,6 +143,6 @@
   <div id="aviso" class="aviso" role="status" aria-live="polite"></div>
   <div id="modalTerminos" class="modal oculto"><div class="panel rejilla"><h2>Términos y condiciones</h2><p class="texto-suave">Avenida Kebab es una tarjeta informativa de fidelidad. La app no procesa pagos ni pedidos.</p><p class="texto-suave">Solo los menús marcados como “dan puntos” suman para el premio. Al llegar a 10 puntos, el restaurante puede canjear un menú gratis y el contador vuelve a 0.</p><p class="texto-suave">La cuenta, el menú y los puntos se sincronizan mediante el servicio online del restaurante.</p><button id="cerrarTerminos" type="button">Entendido</button></div></div>
   <div id="modalRecuperacion" class="modal oculto"><form id="formularioRecuperacion" class="panel rejilla"><h2>Cambia tu contraseña</h2><p class="texto-suave">Escribe una nueva contraseña para tu cuenta.</p><label>Nueva contraseña<input id="nuevaContrasena" type="password" minlength="6" required placeholder="Mínimo 6 caracteres" aria-describedby="ayudaNuevaContrasena"><span id="ayudaNuevaContrasena" class="campo-ayuda"><span id="nuevaLongitud" class="requisito-contrasena">Mínimo 6 caracteres,</span> <span id="nuevaLetra" class="requisito-contrasena">al menos una letra</span><span id="nuevoConectorNumero" class="requisito-contrasena"> y </span><span id="nuevoNumero" class="requisito-contrasena">al menos un número</span><span id="nuevoPuntoNumero" class="requisito-contrasena">.</span><span id="checkNuevaContrasena" class="requisito-check" aria-hidden="true"> ✓</span></span></label><label>Repite la contraseña<input id="confirmarContrasena" type="password" minlength="6" required placeholder="Repite la contraseña"></label><button type="submit">Guardar contraseña</button></form></div>
-  <div id="modalArticulo" class="modal oculto"><form id="formArticulo" class="panel rejilla"><h2 id="tituloArticulo">Artículo del menú</h2><input id="articuloId" type="hidden"><label>Nombre<input id="articuloNombre" required placeholder="Menú kebab en pan"></label><label>Categoría<input id="articuloCategoria" required placeholder="Menús con pan"></label><label>Precio (€)<input id="articuloPrecio" type="number" min="0" step="0.10" required></label><label>Descripción<textarea id="articuloDescripcion" required></textarea></label><label>Variantes<input id="articuloVariantes" placeholder="Pollo, ternera, mixto, cerdo"></label><label>Guarniciones<input id="articuloGuarniciones" placeholder="Patatas fritas, ensalada, salsa"></label><label class="check"><input id="articuloPuntos" type="checkbox">Este artículo suma puntos para el menú gratis</label><div class="acciones"><button type="submit">Guardar</button><button id="cancelarArticulo" class="secundario" type="button">Cancelar</button></div></form></div>
+  <div id="modalArticulo" class="modal oculto"><form id="formArticulo" class="panel rejilla"><h2 id="tituloArticulo">Artículo del menú</h2><input id="articuloId" type="hidden"><label>Nombre<input id="articuloNombre" required placeholder="Menú kebab en pan"></label><label>Categoría<input id="articuloCategoria" required placeholder="Menús con pan"></label><label>Precio (€)<input id="articuloPrecio" type="number" min="0" step="0.10" required></label><label>Descripción<textarea id="articuloDescripcion" required></textarea></label><label>Variantes<input id="articuloVariantes" placeholder="Pollo, ternera, mixto, cerdo"></label><label>Guarniciones<input id="articuloGuarniciones" placeholder="Patatas fritas, ensalada, salsa"></label><label>Imágenes<input id="articuloImagenes" placeholder="Una URL por imagen, separadas por comas"></label><label>Imágenes por variante<input id="articuloImagenesVariantes" placeholder="Pollo=URL, Ternera=URL"></label><label class="check"><input id="articuloPuntos" type="checkbox">Este artículo suma puntos para el menú gratis</label><div class="acciones"><button type="submit">Guardar</button><button id="cancelarArticulo" class="secundario" type="button">Cancelar</button></div></form></div>
 </body>
 </html>

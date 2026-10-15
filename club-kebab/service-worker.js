@@ -1,4 +1,4 @@
-const CACHE_NAME = "club-kebab-shell-v21";
+const CACHE_NAME = "club-kebab-shell-v46";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -8,8 +8,28 @@ const APP_SHELL = [
   "./js/app.js",
   "./js/producto.js",
   "./icon.svg",
-  "./assets/logo1.jpeg",
-  "./assets/banner.webp",
+  "./assets/brand/logo1.jpeg",
+  "./assets/brand/banner.webp",
+  "./assets/menu/kebab.webp",
+  "./assets/menu/parrilla.webp",
+  "./assets/menu/menu.webp",
+  "./assets/alergenos/gluten.png",
+  "./assets/alergenos/leche.png",
+  "./assets/alergenos/huevo.png",
+  "./assets/alergenos/mostaza.png",
+  "./assets/alergenos/sesamo.png",
+  "./assets/alergenos/soja.png",
+  "./assets/alergenos/pescado.png",
+  "./assets/alergenos/crustaceos.png",
+  "./assets/alergenos/cacahuete.png",
+  "./assets/alergenos/frutos-secos.png",
+  "./assets/alergenos/apio.png",
+  "./assets/alergenos/moluscos.png",
+  "./assets/alergenos/altramuces.png",
+  "./assets/alergenos/sulfitos.png",
+  "./assets/alergenos/vegetarian.png",
+  "./assets/dietas/vegetariano.svg",
+  "./assets/dietas/vegano.svg",
   "./vendor/qrcode.min.js",
   "./vendor/jsQR.min.js"
 ];

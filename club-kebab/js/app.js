@@ -120,18 +120,28 @@ function articuloDesdeNube(a) {
     puntos: Boolean(a.awards_points),
     descripcion: a.description || "",
     variantes: a.variants || [],
-    guarniciones: a.sides || []
+    guarniciones: a.sides || [],
+    ingredientes: a.ingredients || [],
+    alergenos: a.allergens || [],
+    puedeContener: a.may_contain || [],
+    etiquetasDieteticas: a.dietary_tags || [],
+    imagenes: a.image_urls || [],
+    imagenesVariantes: a.variant_images || {}
   };
 }
 
 function articuloParaNube(a) {
   return {
-    name: a.nombre,
     category: a.categoria,
     price: Number(a.precio),
     description: a.descripcion,
     variants: a.variantes || [],
     sides: a.guarniciones || [],
+    allergens: a.alergenos || [],
+    may_contain: a.puedeContener || [],
+    dietary_tags: a.etiquetasDieteticas || [],
+    image_urls: a.imagenes || [],
+    variant_images: a.imagenesVariantes || {},
     awards_points: Boolean(a.puntos),
     active: true
   };
@@ -160,7 +170,6 @@ async function cargarClienteNube(id) {
   if (data) estado.datos.clientes[data.id] = clienteDesdeNube(data);
   return data;
 }
-
 async function guardarArticuloNube(articulo, id) {
   const consulta = id
     ? supabaseClient.from("menu_items").update(articuloParaNube(articulo)).eq("id", id).select().single()
@@ -335,11 +344,25 @@ function renderizarCabecera() {
   $("tituloSesion").textContent = admin ? "Panel del restaurante" : estado.sesion?.correo || "Cliente";
   $("subtituloSesion").textContent = admin ? "Carta, clientes y puntos" : "Menú informativo y tarjeta digital";
   $("nuevoArticulo").classList.toggle("oculto", !admin);
-  $("accionesArticulo").classList.toggle("oculto", !admin || !estado.articuloSeleccionado);
+}
+
+function claveFiltro(valor) {
+  return String(valor ?? "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
 }
 
 function categorias(menu) {
-  return ["Todas", ...Array.from(new Set(menu.map((a) => a.categoria)))];
+  const categoriasPrincipales = menu.map((a) => a.categoria).filter(Boolean);
+  const etiquetasDieteticas = Array.from(new Map(
+    menu
+      .flatMap((a) => a.etiquetasDieteticas || [])
+      .filter(Boolean)
+      .map((etiqueta) => [claveFiltro(etiqueta), String(etiqueta).charAt(0).toUpperCase() + String(etiqueta).slice(1)])
+  ).values());
+  return ["Todas", ...Array.from(new Set([...categoriasPrincipales, ...etiquetasDieteticas]))];
 }
 
 function renderizarFiltros() {
@@ -353,18 +376,20 @@ function renderizarFiltros() {
 
 function renderizarMenu() {
   const d = datos();
-  const q = $("buscarMenu").value.trim().toLowerCase();
   const cat = $("filtroCategoria").value || "Todas";
+  const claveCategoria = claveFiltro(cat);
   const pts = $("filtroPuntos").value;
   const items = d.menu.filter((a) =>
-    (cat === "Todas" || a.categoria === cat) &&
-    (!q || [a.nombre, a.categoria, a.descripcion, (a.variantes || []).join(" ")].join(" ").toLowerCase().includes(q)) &&
+    (cat === "Todas" || claveFiltro(a.categoria) === claveCategoria || (a.etiquetasDieteticas || []).some((etiqueta) => claveFiltro(etiqueta) === claveCategoria)) &&
     (pts === "todos" || (pts === "si" ? a.puntos : !a.puntos))
   );
 
   $("listaMenu").innerHTML = items.map((a) => `
     <a class="articulo-enlace" href="producto.html?id=${encodeURIComponent(a.id)}" aria-label="Ver detalles de ${a.nombre}">
       <article class="articulo" data-id="${a.id}">
+      <div class="articulo-imagen">
+        ${a.imagenes?.[0] ? `<img src="${a.imagenes[0]}" alt="${a.nombre}">` : "<span>Imagen del producto</span>"}
+      </div>
       <div class="articulo-cabecera">
         <div><h3>${a.nombre}</h3><p class="texto-suave">${a.categoria}</p></div>
         <div class="precio">${Number(a.precio).toFixed(2)} €</div>
@@ -374,32 +399,24 @@ function renderizarMenu() {
         <span class="etiqueta ${a.puntos ? "puntos" : ""}">${a.puntos ? "Suma puntos" : "No suma puntos"}</span>
         ${(a.variantes || []).slice(0, 3).map((v) => `<span class="etiqueta">${v}</span>`).join("")}
       </div>
+      ${estado.sesion?.rol === "admin" ? `<button class="articulo-editar" type="button" data-id="${a.id}">Editar imágenes y datos</button>` : ""}
       </article>
     </a>
   `).join("") || `<div class="panel texto-suave">No hay artículos con esos filtros.</div>`;
 
-  document.querySelectorAll(".articulo").forEach((el) => {
-    el.addEventListener("click", () => seleccionarArticulo(el.dataset.id));
-    el.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") seleccionarArticulo(el.dataset.id);
+  renderizarCabecera();
+  document.querySelectorAll(".articulo-editar").forEach((boton) => {
+    boton.addEventListener("click", (evento) => {
+      evento.preventDefault();
+      evento.stopPropagation();
+      abrirFormularioArticulo(datos().menu.find((articulo) => articulo.id === boton.dataset.id));
     });
   });
-  if (!estado.articuloSeleccionado && items[0]) seleccionarArticulo(items[0].id, false);
-  renderizarCabecera();
 }
 
 function seleccionarArticulo(id, scroll = true) {
   estado.articuloSeleccionado = id;
-  const a = datos().menu.find((x) => x.id === id);
-  if (!a) return;
-  $("detalleNombre").textContent = a.nombre;
-  $("detalleDescripcion").textContent = a.descripcion;
-  $("detallePrecio").textContent = Number(a.precio).toFixed(2) + " €";
-  $("detalleVariantes").textContent = (a.variantes || []).join(", ") || "Sin variantes";
-  $("detalleGuarniciones").textContent = (a.guarniciones || []).join(", ") || "Sin guarniciones";
-  $("detallePuntos").textContent = a.puntos ? "Sí, suma 1 punto si se compra en el local." : "No suma puntos para el menú gratis.";
   renderizarCabecera();
-  if (scroll && innerWidth < 760) $("detalleNombre").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function abrirFormularioArticulo(a) {
@@ -412,6 +429,8 @@ function abrirFormularioArticulo(a) {
   $("articuloDescripcion").value = a?.descripcion || "";
   $("articuloVariantes").value = (a?.variantes || []).join(", ");
   $("articuloGuarniciones").value = (a?.guarniciones || []).join(", ");
+  $("articuloImagenes").value = (a?.imagenes || []).join(", ");
+  $("articuloImagenesVariantes").value = Object.entries(a?.imagenesVariantes || {}).map(([nombre, url]) => `${nombre}=${url}`).join(", ");
   $("articuloPuntos").checked = Boolean(a?.puntos);
 }
 
@@ -431,6 +450,10 @@ async function guardarArticulo(e) {
     descripcion: $("articuloDescripcion").value.trim(),
     variantes: $("articuloVariantes").value.split(",").map((x) => x.trim()).filter(Boolean),
     guarniciones: $("articuloGuarniciones").value.split(",").map((x) => x.trim()).filter(Boolean),
+    imagenes: $("articuloImagenes").value.split(",").map((x) => x.trim()).filter(Boolean),
+    imagenesVariantes: Object.fromEntries(
+      $("articuloImagenesVariantes").value.split(",").map((x) => x.split("=").map((parte) => parte.trim())).filter(([nombre, url]) => nombre && url)
+    ),
     puntos: $("articuloPuntos").checked
   };
   try {
@@ -458,12 +481,6 @@ async function eliminarArticulo() {
     if (error) throw error;
     datos().menu = datos().menu.filter((x) => x.id !== a.id);
     estado.articuloSeleccionado = null;
-    $("detalleNombre").textContent = "Selecciona un artículo";
-    $("detalleDescripcion").textContent = "Toca un producto para ver ingredientes, variantes y si suma para el menú gratis.";
-    $("detallePrecio").textContent = "-";
-    $("detalleVariantes").textContent = "-";
-    $("detalleGuarniciones").textContent = "-";
-    $("detallePuntos").textContent = "-";
     renderizarFiltros();
     renderizarMenu();
     aviso("Artículo eliminado.");
@@ -811,12 +828,9 @@ $("cerrarTerminos").onclick = () => $("modalTerminos").classList.add("oculto");
 $("botonSalir").onclick = salir;
 $("navMenu").onclick = () => activarSeccion("menu");
 $("navTarjeta").onclick = () => activarSeccion("tarjeta");
-$("buscarMenu").oninput = renderizarMenu;
 $("filtroCategoria").onchange = renderizarMenu;
 $("filtroPuntos").onchange = renderizarMenu;
 $("nuevoArticulo").onclick = () => abrirFormularioArticulo(null);
-$("editarArticulo").onclick = () => abrirFormularioArticulo(datos().menu.find((a) => a.id === estado.articuloSeleccionado));
-$("eliminarArticulo").onclick = eliminarArticulo;
 $("formArticulo").onsubmit = guardarArticulo;
 $("cancelarArticulo").onclick = cerrarFormularioArticulo;
 $("abrirCamara").onclick = abrirCamara;
@@ -835,19 +849,22 @@ $("quitarCliente").onclick = () => {
 };
 
 async function inicializarAplicacion() {
-  mostrarVista("acceso");
   renderizarFiltros();
   renderizarMenu();
   if (!supabaseClient) {
+    mostrarVista("acceso");
     aviso("No se pudo cargar la conexión con Supabase.");
     return;
   }
-  if ("serviceWorker" in navigator) navigator.serviceWorker.register("service-worker.js?v=21").catch(() => {});
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("service-worker.js?v=46").catch(() => {});
   supabaseClient.auth.onAuthStateChange((evento) => {
     if (evento === "PASSWORD_RECOVERY") mostrarModalRecuperacion();
   });
   const { data } = await supabaseClient.auth.getSession();
-  if (!data.session) return;
+  if (!data.session) {
+    mostrarVista("acceso");
+    return;
+  }
   const hashEsRecuperacion = new URLSearchParams(window.location.hash.slice(1)).get("type") === "recovery";
   const consultaEsRecuperacion = new URLSearchParams(window.location.search).get("type") === "recovery";
   const recuperacionPendiente = localStorage.getItem("club-kebab-recovery-pending") === "true";
@@ -865,7 +882,9 @@ async function inicializarAplicacion() {
     };
     await entrarApp();
   } catch (error) {
-    await supabaseClient.auth.signOut();
+    console.error("No se pudo restaurar la sesión:", error);
+    estado.sesion = null;
+    mostrarVista("acceso");
     aviso(error.message || "No se pudo restaurar la sesión.");
   }
 }
