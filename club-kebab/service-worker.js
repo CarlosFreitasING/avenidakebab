@@ -1,4 +1,4 @@
-const CACHE_NAME = "club-kebab-shell-v46";
+const CACHE_NAME = "club-kebab-shell-v47";
 const APP_SHELL = [
   "./",
   "./index.html",

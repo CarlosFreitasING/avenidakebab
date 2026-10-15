@@ -856,7 +856,7 @@ async function inicializarAplicacion() {
     aviso("No se pudo cargar la conexión con Supabase.");
     return;
   }
-  if ("serviceWorker" in navigator) navigator.serviceWorker.register("service-worker.js?v=46").catch(() => {});
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("service-worker.js?v=47").catch(() => {});
   supabaseClient.auth.onAuthStateChange((evento) => {
     if (evento === "PASSWORD_RECOVERY") mostrarModalRecuperacion();
   });
